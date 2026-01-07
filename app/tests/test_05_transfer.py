@@ -12,6 +12,10 @@ Example:
 - After transfer: T2 should be "1", but might be "110" or "11" if not cleared properly
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from turing_machine import MultiTapeTuringMachine, Tape
 import tm_logic_utils as utils
 

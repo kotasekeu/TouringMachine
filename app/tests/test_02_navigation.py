@@ -5,6 +5,10 @@ Tests that the machine can find the next factor on T1 and position at its LSB.
 This includes q_look_for_next and q_seek_factor_end states.
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from turing_machine import MultiTapeTuringMachine, Tape
 
 

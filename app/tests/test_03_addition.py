@@ -4,6 +4,10 @@ Test 3: Binary Addition Logic (add_binary_addition_logic)
 Tests that T3 = T3 + T2 works correctly with carry handling.
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from turing_machine import MultiTapeTuringMachine, Tape
 import tm_logic_utils as utils
 

@@ -5,6 +5,10 @@ Tests that the first number is correctly copied from T1 to T2,
 and heads are positioned correctly for subsequent operations.
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from turing_machine import MultiTapeTuringMachine, Tape
 import tm_logic_utils as utils
 
