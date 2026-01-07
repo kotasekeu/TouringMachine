@@ -208,3 +208,5 @@ __marimo__/
 
 .idea
 .claude
+/app/machine_definition.txt
+/app/final_simulation.txt
