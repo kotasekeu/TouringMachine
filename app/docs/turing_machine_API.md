@@ -1,9 +1,9 @@
 # turing_machine.py API Documentation
 
 **Module**: `turing_machine.py`
-**Purpose**: Core infrastructure for Multi-Tape Turing Machine simulation
-**Version**: 1.0
-**Date**: 2026-01-07
+<br />**Purpose**: Core infrastructure for Multi-Tape Turing Machine simulation
+<br />**Version**: 1.0
+<br />**Date**: 2026-01-07
 
 ---
 
@@ -650,30 +650,8 @@ Where:
 
 ---
 
-## Thread Safety
-
-**Not thread-safe**. Do not share TM instances across threads without external synchronization.
-
----
-
 ## Related Files
 
 - **tm_logic_utils.py**: Multiplication logic blocks (add, shift, transfer)
 - **run.py**: Main entry point and state machine composition
 - **tests/test_*.py**: Unit and integration tests
-
----
-
-## Changelog
-
-### Version 1.0 (2026-01-07)
-- Initial release
-- Comprehensive documentation added
-- Removed deprecated functions
-- Enhanced comments for all classes and methods
-
----
-
-## License
-
-Generated for CS Theory Project - Educational Use

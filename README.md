@@ -319,10 +319,3 @@ For unit test failures, run individual logic block tests to isolate the issue.
 
 - Sipser, M. (2012). *Introduction to the Theory of Computation* (3rd ed.)
 - Hopcroft, J. E., Motwani, R., & Ullman, J. D. (2006). *Introduction to Automata Theory, Languages, and Computation*
-
-## Version History
-
-**v1.0** (2026-01-07)
-- Initial implementation with 3-tape multiplication
-- Complete test suite (unit + integration)
-- Comprehensive documentation

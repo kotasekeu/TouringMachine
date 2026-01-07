@@ -1,9 +1,9 @@
 # tm_logic_utils.py API Documentation
 
 **Module**: `tm_logic_utils.py`
-**Purpose**: Composable logic blocks for binary n-ary multiplication
-**Version**: 1.0
-**Date**: 2026-01-07
+<br />**Purpose**: Composable logic blocks for binary n-ary multiplication
+<br />**Version**: 1.0
+<br />**Date**: 2026-01-07
 
 ---
 
@@ -432,19 +432,3 @@ q_mul_select
 - **turing_machine.py**: Core TM infrastructure
 - **run.py**: Complete state machine assembly
 - **tests/test_*.py**: Unit tests for each logic block
-
----
-
-## Changelog
-
-### Version 1.0 (2026-01-07)
-- Comprehensive documentation added
-- Bug #4 (T2 residual data) documented
-- Bug #5 (T3 fragmentation normalization) documented
-- Enhanced inline comments for all phases
-
----
-
-## License
-
-Generated for CS Theory Project - Educational Use

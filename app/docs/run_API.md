@@ -1,9 +1,9 @@
 # run.py API Documentation
 
 **Module**: `run.py`
-**Purpose**: Main entry point for binary n-ary multiplication using Multi-Tape Turing Machine
-**Version**: 1.0
-**Date**: 2026-01-07
+<br />**Purpose**: Main entry point for binary n-ary multiplication using Multi-Tape Turing Machine
+<br />**Version**: 1.0
+<br />**Date**: 2026-01-07
 
 ---
 
@@ -694,20 +694,3 @@ Breakdown:
 - **[tm_logic_utils.py](tm_logic_utils_API.md)**: Composable logic blocks
 - **[final_simulation.txt](../final_simulation.txt)**: Generated execution trace
 - **[machine_definition.txt](../machine_definition.txt)**: Generated machine encoding
-
----
-
-## Changelog
-
-### Version 1.0 (2026-01-07)
-- Complete documentation of run.py
-- Detailed state machine architecture
-- Performance analysis and benchmarks
-- Troubleshooting guide
-- Usage examples for common cases
-
----
-
-## License
-
-Generated for CS Theory Project - Educational Use
