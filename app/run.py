@@ -77,15 +77,11 @@ def main():
 
     blank = '#'                                    # Blank symbol and separator
     alphabet = ['0', '1', blank]                   # Binary alphabet
-    input_str = "101#10#110#1#1001#10#"           # Input: 5×2×6×1×9×2 = 1080
+    input_str = "101#10#110#"                      # Input: 5×2×6 = 60
     output_file = "final_simulation.txt"           # Execution trace output
     machine_file = "machine_definition.txt"        # Machine encoding output
     num_tapes = 3                                  # T1=input, T2=working, T3=accumulator
     transitions = {}                               # Transition table (initially empty)
-
-    # Logging configuration
-    log_every_n_steps = 1      # Set to 1 for every step, 10 for every 10th step, etc.
-    show_debug_info = False    # Set to True to see T2/T3 data at key states
 
     # ========================================================================
     # STATE MACHINE COMPOSITION - Unified Architecture
@@ -442,20 +438,8 @@ def main():
 
         # Main execution loop: run until accept state or max steps
         while tm.current_state != 'q_final' and tm.step < max_steps:
-            # Periodic console output for progress monitoring
-            if tm.step % log_every_n_steps == 0:
-                print(f"Step {tm.step}: State={tm.current_state}, "
-                      f"T1_Head={tm.tapes[0].head}, T1_Char='{tm.tapes[0].read()}'")
-                SimulationLogger.log_state(tm, f)
-
-            # Optional debug output at key states
-            if show_debug_info and tm.current_state in ['q_mul_select', 'q_shift_t2', 'q_add_finish']:
-                # Extract non-blank data from T2 and T3
-                t2_data = {k: tm.tapes[1].data[k] for k in sorted(tm.tapes[1].data.keys())
-                          if tm.tapes[1].data[k] != blank}
-                t3_data = {k: tm.tapes[2].data[k] for k in sorted(tm.tapes[2].data.keys())
-                          if tm.tapes[2].data[k] != blank}
-                f.write(f"  DEBUG: T2={t2_data}, T3={t3_data}\n")
+            # Log state transition details
+            SimulationLogger.log_state(tm, f)
 
             # Execute one step
             if not tm.step_forward():
@@ -464,6 +448,9 @@ def main():
                 f.write(f"\nHALTED: No rule for state {tm.current_state} "
                        f"with symbols {current_symbols}\n")
                 break
+
+            # Log tape states after each step
+            SimulationLogger.log_tapes(tm, f)
 
         # Log final state
         SimulationLogger.log_state(tm, f)
@@ -503,10 +490,8 @@ def main():
             f.write(f"\nMachine definition written to {machine_file}\n")
             f.write(f"Total steps executed: {tm.step}\n")
 
-    # Final console output
-    print(f"\nSimulation finished. Result: {res if 'res' in locals() else 'Error'}")
-    print(f"Check {output_file} for complete execution trace")
-    print(f"Check {machine_file} for machine definition")
+    # Final console output (minimal)
+    print(f"Simulation finished. Result: {res if 'res' in locals() else 'Error'}")
 
 
 # ============================================================================
