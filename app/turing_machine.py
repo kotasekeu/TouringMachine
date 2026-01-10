@@ -363,47 +363,86 @@ class TuringEncoder:
 
     def encode_binary(self) -> str:
         """
-        Encode machine as a binary string using unary representation.
+        Encode complete Turing machine as a binary string using unary representation.
 
         Returns:
             str: Binary-encoded machine (unary + separators)
+
+        Format:
+            num_tapes '111' initial_state '111' blank_symbol '111'
+            final_states '111' transitions
+
+        Components:
+            - num_tapes: Unary encoding of tape count
+            - initial_state: Unary encoding of start state
+            - blank_symbol: Unary encoding of blank symbol
+            - final_states: Unary-encoded accepting states separated by '1'
+            - transitions: Encoded transition rules (see below)
 
         Format per transition:
             state_in '1' symbols_in '1' state_out '1' symbols_out '1' moves
 
         Multiple transitions separated by '11'.
 
+        Separators:
+            '1'   - within single transition (between components)
+            '11'  - between different transitions
+            '111' - between major sections of the machine
+
         Example:
-            For 3-tape machine with transition:
-            δ(q_start, ('1', '#', '#')) = (q_start, ('1', '1', '#'), ('R', 'R', 'S'))
+            For 3-tape machine:
+            - 3 tapes (='000')
+            - q_start as initial state (='0')
+            - '#' as blank (='0')
+            - q_final as accepting state (='00')
+            - Transition: δ(q_start, ('1','#','#')) = (q_start, ('1','1','#'), ('R','R','S'))
 
-            If q_start is 0th state (='0') and symbols map as:
-            '#'='0', '0'='00', '1'='000'
-
-            Then encoded as:
-            "0 | 000,0,0 | 0 | 000,000,0 | 00,00,000"
-            (without spaces, with '1' separators)
+            Encoded as:
+            "000 ||| 0 ||| 0 ||| 00 ||| 0|000,0,0|0|000,000,0|00,00,000"
+            (without spaces, '|||' = '111')
 
         Note:
             This encoding is primarily for theoretical analysis (e.g., Kolmogorov complexity).
             For practical use, prefer JSON encoding.
         """
-        encoded_rules = []
+        parts = []
 
+        # 1. Encode number of tapes
+        parts.append("0" * self.m.num_tapes)
+
+        # 2. Encode initial state
+        parts.append(self.state_map[self.m.start_state])
+
+        # 3. Encode blank symbol
+        parts.append(self.alpha_map[self.m.blank])
+
+        # 4. Encode final (accepting) states
+        # Each state encoded in unary, separated by '1'
+        final_states_encoded = "1".join(
+            self.state_map[q] for q in sorted(self.m.accept_states)
+        )
+        parts.append(final_states_encoded if final_states_encoded else "")
+
+        # 5. Encode all transitions
+        encoded_rules = []
         for (q_curr, symbols_read), (q_next, symbols_write, moves) in self.m.transitions.items():
             # Encode each component using unary representation
-            parts = [
-                self.state_map[q_curr],                    # Current state
+            transition_parts = [
+                self.state_map[q_curr],  # Current state
                 *[self.alpha_map[s] for s in symbols_read],  # Input symbols (all tapes)
-                self.state_map[q_next],                    # Next state
-                *[self.alpha_map[s] for s in symbols_write], # Output symbols (all tapes)
-                *[self.move_map[m] for m in moves]         # Head movements (all tapes)
+                self.state_map[q_next],  # Next state
+                *[self.alpha_map[s] for s in symbols_write],  # Output symbols (all tapes)
+                *[self.move_map[m] for m in moves]  # Head movements (all tapes)
             ]
-            # Join parts with '1' separator within transition
-            encoded_rules.append("1".join(parts))
+            # Join components with '1' separator within single transition
+            encoded_rules.append("1".join(transition_parts))
 
         # Join transitions with '11' separator
-        return "11".join(encoded_rules)
+        transitions_encoded = "11".join(encoded_rules)
+        parts.append(transitions_encoded)
+
+        # Join major sections with '111' separator
+        return "111".join(parts)
 
     def encode(self) -> str:
         """

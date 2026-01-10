@@ -37,7 +37,8 @@ State Machine Architecture:
 
 Output Files:
     - final_simulation.txt: Complete execution trace with tape visualizations
-    - machine_definition.txt: Machine encoding in binary and JSON formats
+    - machine_binary.txt: Machine encoding in binary unary format
+    - machine_definition.json: Machine encoding in JSON format
 
 Author: Generated for CS Theory Project
 Date: 2026-01-07
@@ -67,7 +68,8 @@ def main():
     Configuration:
         - Input: Defined by input_str (binary numbers separated by #)
         - Output: Written to final_simulation.txt
-        - Machine definition: Written to machine_definition.txt
+        - Machine binary encoding: Written to machine_binary.txt
+        - Machine JSON encoding: Written to machine_definition.json
         - Logging: Configurable step granularity and debug info
     """
 
@@ -79,7 +81,8 @@ def main():
     alphabet = ['0', '1', blank]                   # Binary alphabet
     input_str = "101#10#110#"                      # Input: 5×2×6 = 60
     output_file = "final_simulation.txt"           # Execution trace output
-    machine_file = "machine_definition.txt"        # Machine encoding output
+    machine_binary_file = "machine_binary.txt"     # Machine binary encoding output
+    machine_json_file = "machine_definition.json"  # Machine JSON encoding output
     num_tapes = 3                                  # T1=input, T2=working, T3=accumulator
     transitions = {}                               # Transition table (initially empty)
 
@@ -473,21 +476,23 @@ def main():
                 decimal_result = int(res, 2)
                 f.write(f"RESULT IN DECIMAL: {decimal_result}\n")
 
-            # Write machine definition to separate file
-            with open(machine_file, "w", encoding="utf-8") as mf:
-                # Binary encoding (unary-based)
+            # Write machine definition to separate files
+            encoder = TuringEncoder(tm)
+
+            # Binary encoding to separate file
+            with open(machine_binary_file, "w", encoding="utf-8") as mf:
                 mf.write("=" * 80 + "\n")
                 mf.write("MACHINE ENCODING (BINARY UNARY FORMAT)\n")
                 mf.write("=" * 80 + "\n\n")
-                mf.write(f"{TuringEncoder(tm).encode_binary()}\n\n")
+                mf.write(f"{encoder.encode_binary()}\n")
 
-                # JSON encoding (human-readable)
-                mf.write("=" * 80 + "\n")
-                mf.write("MACHINE ENCODING (JSON FORMAT)\n")
-                mf.write("=" * 80 + "\n\n")
-                mf.write(f"{TuringEncoder(tm).encode()}\n")
+            # JSON encoding to separate file
+            with open(machine_json_file, "w", encoding="utf-8") as mf:
+                mf.write(f"{encoder.encode()}\n")
 
-            f.write(f"\nMachine definition written to {machine_file}\n")
+            f.write(f"\nMachine definition written to:\n")
+            f.write(f"  - Binary format: {machine_binary_file}\n")
+            f.write(f"  - JSON format: {machine_json_file}\n")
             f.write(f"Total steps executed: {tm.step}\n")
 
     # Final console output (minimal)
